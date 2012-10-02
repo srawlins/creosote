@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+require 'trollop'
+
+require File.join(File.dirname(__FILE__), '..', 'lib', 'creosote', 'package')
+
+SUB_COMMANDS = %w(package pkg)
+SUB_COMMANDS_PKG = %w(available install)
+global_opts = Trollop::options do
+  banner "Creosote - Scientific Math for Ruby"
+  opt :version, "Creosote Version"
+  stop_on SUB_COMMANDS
+end
+
+cmd = ARGV.shift  # get the subcommand
+if cmd == "pkg" || cmd == "package"
+  cmd2 = ARGV.shift
+  case cmd2
+  when "available"
+    cmd_opts = Trollop::options do
+      opt :latest, "just latest release"
+    end
+    # It is ok if this returns nil; package name is optional for 'available'
+    package_name = ARGV.shift
+    Creosote::Package.print_available(package_name, cmd_opts)
+  when "install"
+    cmd_opts = Trollop::options do
+      opt :version, "package version", :short => '-v'
+    end
+    raise Creosote::Package::BadInstallArgs if ARGV.empty?
+    package_name = ARGV.shift
+    Creosote::Package.install(package_name, cmd_opts)
+  else
+    Trollop::die "unknown subcommand #{cmd.inspect}"
+  end
+end
