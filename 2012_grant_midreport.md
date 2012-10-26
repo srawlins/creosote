@@ -19,7 +19,7 @@ The targets for this intermediate report include the following:
 1. Up-to-date GMP, MPFR, and Msieve libraries, and extensive documentation for each
 2. Ruby bindings for GMP-ECM
 3. Ruby bindings for MPC
-4. Creosote, a gem allowing various mathematics libraries to be bridged, in Ruby
+4. Creosote, a library allowing various mathematics libraries to be bridged, in Ruby
 
 Effort was made against each of these targets, except for the second. Bindings for GMP-ECM will be written during the second half of the grant period.
 
@@ -87,4 +87,10 @@ completed during the first half of the grant period:
 * Approximately 10 functions from the MPC interface have not been bridged.
 * The `gnu_mpc` gem has largely been documented in `manual.md`, which gets compiled into a 12-page `manual.pdf` and `manual.html`, using Pandoc.
 
-## 4. Creosote, a gem allowing various mathematics libraries to be bridged, in Ruby
+## 4. Creosote, a library allowing various mathematics libraries to be bridged, in Ruby
+
+This libaray is well underway. At present, the library "knows about" GMP, MPFR, MPC, and Msieve. It can be queried for the latest version of each package. It can also unpack, configure, make, check, and install GMP as a pilot project. At present, the packages install to `$HOME/.creosote/usr`. I plan to allow `/usr/local` if this directory is writeable (i.e., we are root).
+
+This project uses Vagrant for reusable virtual machines where we can assume certain libraries are available, and others aren't.
+
+As creosote grows to help users install the dependant packages, it will also be able to help in bridging individual libraries together.
