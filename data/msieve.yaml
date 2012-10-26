@@ -1,0 +1,12 @@
+---
+:versions:
+  msieve150:
+    date: '2012-02-03'
+    extensions:
+    - src.tar.gz
+    url: http://downloads.sourceforge.net/project/msieve/msieve/Msieve%20v1.50/msieve150src.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmsieve%2Ffiles%2Fmsieve%2FMsieve%2520v1.50%2F
+  msieve149:
+    date: '2011-06-16'
+    extensions:
+    - .tar.gz
+    url: http://downloads.sourceforge.net/project/msieve/msieve/Msieve%20v1.49/msieve149.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fmsieve%2Ffiles%2Fmsieve%2FMsieve%2520v1.49%2F&ts=1349293084&use_mirror=iweb

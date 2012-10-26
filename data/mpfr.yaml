@@ -1,0 +1,52 @@
+---
+base_url: http://ftp.gnu.org/gnu/mpfr/
+versions:
+  mpfr-2.4.0:
+    date: '2009-12-06'
+    extensions:
+    - .tar.bz2
+    - .tar.gz
+    - .tar.lzma
+    - .zip
+  mpfr-2.4.1:
+    date: '2009-12-06'
+    extensions:
+    - .tar.bz2
+    - .tar.gz
+    - .tar.lzma
+    - .zip
+  mpfr-2.4.2:
+    date: '2009-12-06'
+    extensions:
+    - .tar.bz2
+    - .tar.gz
+    - .tar.xz
+    - .zip
+  mpfr-3.0.0:
+    date: '2010-06-10'
+    extensions:
+    - .tar.bz2
+    - .tar.gz
+    - .tar.xz
+    - .zip
+  mpfr-3.0.1:
+    date: '2011-04-04'
+    extensions:
+    - .tar.bz2
+    - .tar.gz
+    - .tar.xz
+    - .zip
+  mpfr-3.1.0:
+    date: '2011-10-03'
+    extensions:
+    - .tar.bz2
+    - .tar.gz
+    - .tar.xz
+    - .zip
+  mpfr-3.1.1:
+    date: '2012-07-03'
+    extensions:
+    - .tar.bz2
+    - .tar.gz
+    - .tar.xz
+    - .zip

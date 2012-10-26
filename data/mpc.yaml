@@ -1,0 +1,7 @@
+---
+base_url: http://ftp.gnu.org/gnu/mpc/
+versions:
+  mpc-1.0.1:
+    date: '2012-09-06'
+    extensions:
+    - .tar.gz
