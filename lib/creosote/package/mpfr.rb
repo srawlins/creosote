@@ -1,9 +1,14 @@
 class Creosote::Package::MPFR < Creosote::Package::Base
+  def self.data
+    @@data
+  end
+
   # List of packages that were uploaded in the last `days` days. Default timeframe is 2 years
   def self.recent_packages(days=365*2)
     results = []
     if @somehow_signifying_that_we_want_to_use_ftp.nil?
-      return Creosote::Package.data_for('mpfr')['versions'].keys
+      @@data ||= Creosote::Package.data_for('mpfr')
+      return @@data['versions'].keys
     else
       self.ftp_listing do |entry|
         next unless entry =~ /mpfr-\d/

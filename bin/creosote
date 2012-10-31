@@ -2,15 +2,15 @@
 
 require 'trollop'
 
-require File.join(File.dirname(__FILE__), '..', 'lib', 'creosote', 'package')
+require File.join(File.expand_path(File.dirname(__FILE__)), '..', 'lib', 'creosote')
 
 SUB_COMMANDS = %w(package pkg)
 SUB_COMMANDS_PKG = %w(available install)
-global_opts = Trollop::options do
-  banner "Creosote - Scientific Math for Ruby"
-  opt :version, "Creosote Version"
-  stop_on SUB_COMMANDS
-end
+#global_opts = Trollop::options do
+#  banner "Creosote - Scientific Math for Ruby"
+#  opt :version, "Creosote Version"
+#  stop_on SUB_COMMANDS
+#end
 
 cmd = ARGV.shift  # get the subcommand
 if cmd == "pkg" || cmd == "package"
@@ -25,8 +25,10 @@ if cmd == "pkg" || cmd == "package"
     Creosote::Package.print_available(package_name, cmd_opts)
   when "install"
     cmd_opts = Trollop::options do
-      opt :version, "package version", :short => '-v'
+      opt :ver, "package version", :short => '-v', :type => :string
+      opt :default, "install this as the default version"
     end
+    puts cmd_opts
     raise Creosote::Package::BadInstallArgs if ARGV.empty?
     package_name = ARGV.shift
     Creosote::Package.install(package_name, cmd_opts)

@@ -53,7 +53,7 @@ class Creosote::Package
     end
     installer_class = Creosote::Installer.installer_class(package_name)
     installer = installer_class.new(version)
-    installer.install(options)
+    installer.install(package_class(package_name), options)
   end
 
   def self.print_available(package_name, options={})

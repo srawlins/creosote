@@ -1,9 +1,14 @@
 class Creosote::Package::GMP < Creosote::Package::Base
+  def self.data
+    @@data
+  end
+
   # List of packages that were uploaded in the last 2 years
   def self.recent_packages
     results = []
     if @somehow_signifying_that_we_want_to_use_ftp.nil?
-      return Creosote::Package.data_for('gmp')['versions'].keys
+      @@data ||= Creosote::Package.data_for('gmp')
+      return @@data['versions'].keys
     else
       self.ftp_listing do |entry|
         next unless entry =~ /gmp-\d/
