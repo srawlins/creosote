@@ -1,0 +1,33 @@
+---
+base_url: http://ftp.gnu.org/gnu/gmp/
+versions:
+  gmp-5.0.0:
+    date: '2010-01-08'
+    extensions:
+    - .tar.gz
+    - .tar.bz2
+  gmp-5.0.1:
+    date: '2010-02-06'
+    extensions:
+    - .tar.gz
+    - .tar.bz2
+  gmp-5.0.2:
+    date: '2011-05-08'
+    extensions:
+    - .tar.gz
+    - .tar.bz2
+  gmp-5.0.3:
+    date: '2012-01-27'
+    extensions:
+    - .tar.bz2
+    - .tar.xz
+  gmp-5.0.4:
+    date: '2012-02-10'
+    extensions:
+    - .tar.bz2
+    - .tar.xz
+  gmp-5.0.5:
+    date: '2012-05-06'
+    extensions:
+    - .tar.bz2
+    - .tar.xz
