@@ -1,4 +1,4 @@
-class Creosote::Installer::GMP < Creosote::Installer::Base
+class Creosote::Installer::MPFR < Creosote::Installer::Base
   def initialize(version)
     @version = version
     @src_download = "#{version}.tar.bz2"
