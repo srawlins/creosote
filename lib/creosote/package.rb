@@ -1,11 +1,20 @@
 require 'date'
 require 'net/ftp'
+require 'yaml'
 
 require 'active_support/inflector'
 
 module Creosote; end
 
 class Creosote::Package
+  def self.data_for(package_name)
+    YAML.load(
+      File.read(
+        File.join(File.dirname(__FILE__), '..', '..', 'data', package_name+'.yaml')
+      )
+    )
+  end
+
   def self.available(package_name, options={})
     if package_name.nil?
       self.available_all(options)
@@ -32,6 +41,19 @@ class Creosote::Package
     else
       klass.recent_packages
     end
+  end
+
+  def self.install(package_name, options={})
+    if options[:ver]
+      version = options[:ver]
+      version = package_class(package_name).recent_packages.select { |e| e =~ /#{version}/ }.first
+    else
+      version = package_class(package_name).latest_package
+      puts version
+    end
+    installer_class = Creosote::Installer.installer_class(package_name)
+    installer = installer_class.new(version)
+    installer.install(options)
   end
 
   def self.print_available(package_name, options={})
