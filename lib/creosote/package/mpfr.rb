@@ -1,4 +1,8 @@
 class Creosote::Package::MPFR < Creosote::Package::Base
+  def self.prefix; 'mpfr' end
+  def self.headers; ['mpfr.h', 'mpf2mpfr.h']; end
+  def self.libraries; [['mpfr', 'mpfr_init']]; end
+
   def self.data
     @@data
   end

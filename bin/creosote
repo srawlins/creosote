@@ -28,10 +28,13 @@ if cmd == "pkg" || cmd == "package"
       opt :ver, "package version", :short => '-v', :type => :string
       opt :default, "install this as the default version"
     end
-    puts cmd_opts
     raise Creosote::Package::BadInstallArgs if ARGV.empty?
     package_name = ARGV.shift
     Creosote::Package.install(package_name, cmd_opts)
+  when "installed"
+    raise Creosote::Package::BadInstallArgs if ARGV.empty?
+    package_name = ARGV.shift
+    Creosote::Package.installed(package_name)
   else
     Trollop::die "unknown subcommand #{cmd.inspect}"
   end

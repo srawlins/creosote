@@ -1,8 +1,13 @@
 class Creosote::Installer::Base
   attr_accessor :verbosity, :version
 
+  Expanders = {
+    '.bz2' => 'tar -xjf',
+    '.gz'  => 'tar -xzf'
+  }
+
   def base_configure
-    command = "./configure --prefix=#{Creosote::PackagePath}"
+    command = "./configure --prefix=#{Creosote::PackagePath} #{@configure_opts}"
     system(command, log_prefix: 'base-configure')
   end
 
@@ -19,24 +24,46 @@ class Creosote::Installer::Base
     Dir.chdir(Creosote::PackageSrcPath)
   end
 
+  def expanded_path
+    @expanded_path ||= if (@package_klass.data['versions'][@version]['extracted_dir'])
+      File.join(Creosote::PackageSrcPath, @package_klass.data['versions'][@version]['extracted_dir'])
+    else
+      File.join(Creosote::PackageSrcPath, @version)
+    end
+  end
+
   def cd_src
-    src_path = File.join(Creosote::PackageSrcPath, @version)
     case @verbosity
     when :silent
     when :summary
-      puts "cd #{src_path}"
+      puts "cd #{expanded_path}"
     when :verbose
-      puts "cd #{src_path}"
+      puts "cd #{expanded_path}"
     else
-      puts "cd #{src_path}"
+      puts "cd #{expanded_path}"
     end
-    Dir.chdir(src_path)
+    Dir.chdir(expanded_path)
+  end
+
+  def install_dependencies
+    return unless @dependencies
+    @dependencies.each do |dep|
+      next if Creosote::Package.installed(dep, :default_only => true)
+      Creosote::Package.install(dep, :default => true)
+    end
   end
 
   def download
-    @uri = URI.parse(@package_klass.data['base_url'])
+    if @package_klass.data['base_url']
+      @uri = URI.parse(@package_klass.data['base_url'])
+    else
+      @uri = URI.parse(@package_klass.data['versions'][@version]['url'])
+    end
     handle = File.open(@src_download, 'wb')
-    Net::HTTP.start(@uri.host) do |http|
+    opts = {}
+    opts[:use_ssl] = true if @uri.scheme == 'https'
+    Net::HTTP.start(@uri.host, opts) do |http|
+      print "downloading #{@uri.host}#{@uri.path}/#{@src_download}...."
       http.request_get("#{@uri.path}/#{@src_download}") do |resp|
         resp.read_body do |segment|
           handle.write(segment)
@@ -46,10 +73,24 @@ class Creosote::Installer::Base
       print("\b")
     end
     handle.close
+    print "\n"
+  end
+
+  def downloaded?
+    File.exists?(@src_download)
+  end
+
+  def ensure_sane
+    [Creosote::PackagePath, Creosote::PackageSrcPath].each do |path|
+      if not File.exist? path
+        FileUtils.mkdir_p path
+      end
+    end
   end
 
   def expand
-    command = "tar -xjf #{@src_download}"
+    command = "#{Expanders[File.extname(@src_download)]} #{@src_download}"
+    #command = "tar -xjf #{@src_download}"
     system(command, log_prefix: 'tar')
   end
 
@@ -102,23 +143,37 @@ class Creosote::Installer::Base
       `#{command} #{redirects options[:log_prefix]}`
       result = $?.exitstatus
     when :summary
-      puts command
+      print command
       `#{command} #{redirects options[:log_prefix]}`
       result = $?.exitstatus
+      $?.exitstatus == 0 ? finish_ok_line(command) : finish_fail_line(command)
     when :verbose
       print_and_log_system(command, options)
     else # same as :summary
-      puts command
+      print command
       `#{command} #{redirects options[:log_prefix]}`
       result = $?.exitstatus
+      $?.exitstatus == 0 ? finish_ok_line(command) : finish_fail_line(command)
     end
     if result != 0
       raise StandardError
     end
   end
 
+  def finish_ok_line(message)
+    status = HighLine.color('[OK]', HighLine::BOLD, HighLine::GREEN)
+    space = ' ' * (Creosote::Columns - (message.size + status.size))
+    puts space + status
+  end
+
+  def finish_fail_line(message)
+    status = HighLine.color('[FAIL]', HighLine::BOLD, HighLine::RED)
+    space = ' ' * (Creosote::Columns - (message.size + status.size))
+    puts space + status
+  end
+
   def versioned_configure
-    command = "./configure --prefix=#{package_dir}"
+    command = "./configure --prefix=#{package_dir} #{@configure_opts}"
     system(command, log_prefix: 'versioned-configure')
   end
 end

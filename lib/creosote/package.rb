@@ -7,11 +7,11 @@ require 'active_support/inflector'
 module Creosote; end
 
 class Creosote::Package
+  DataDir = File.join(File.dirname(__FILE__), '..', '..', 'data')
+
   def self.data_for(package_name)
-    YAML.load(
-      File.read(
-        File.join(File.dirname(__FILE__), '..', '..', 'data', package_name+'.yaml')
-      )
+    YAML.load File.read(
+      File.join(DataDir, package_name+'.yaml')
     )
   end
 
@@ -49,11 +49,19 @@ class Creosote::Package
       version = package_class(package_name).recent_packages.select { |e| e =~ /#{version}/ }.first
     else
       version = package_class(package_name).latest_package
-      puts version
     end
     installer_class = Creosote::Installer.installer_class(package_name)
     installer = installer_class.new(version)
     installer.install(package_class(package_name), options)
+  end
+
+  def self.installed(package_name=nil, options = {})
+    if package_name.nil?
+      # lots of stuff
+    else
+    klass = self.package_class(package_name)
+    klass.installed(options)
+    end
   end
 
   def self.print_available(package_name, options={})
@@ -88,6 +96,7 @@ end
 
 require File.join(File.dirname(__FILE__), 'package', 'base')
 require File.join(File.dirname(__FILE__), 'package', 'gmp')
+require File.join(File.dirname(__FILE__), 'package', 'gmp-ecm')
 require File.join(File.dirname(__FILE__), 'package', 'mpc')
 require File.join(File.dirname(__FILE__), 'package', 'mpfr')
 require File.join(File.dirname(__FILE__), 'package', 'msieve')

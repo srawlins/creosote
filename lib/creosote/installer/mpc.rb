@@ -1,9 +1,9 @@
-class Creosote::Installer::MPFR < Creosote::Installer::Base
+class Creosote::Installer::MPC < Creosote::Installer::Base
   def initialize(version)
     @version = version
-    @src_download = "#{version}.tar.bz2"
-    @configure_opts = "--with-gmp=#{Creosote::PackagePath}"
-    @dependencies = ['gmp']
+    @src_download = "#{version}.tar.gz"
+    @configure_opts = "--with-mpfr=#{Creosote::PackagePath}"
+    @dependencies = ['mpfr']
   end
 
   def install(package_klass, options={})

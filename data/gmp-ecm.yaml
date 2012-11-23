@@ -1,0 +1,18 @@
+---
+versions:
+  gmp-ecm-6.4:
+    date: '2012-01-03'
+    url: 'https://gforge.inria.fr/frs/download.php/30052/'
+    extracted_dir: 'ecm-6.4'
+  gmp-ecm-6.4.1:
+    date: '2012-03-14'
+    url: 'https://gforge.inria.fr/frs/download.php/30410/'
+    extracted_dir: 'ecm-6.4.1'
+  gmp-ecm-6.4.2:
+    date: '2012-03-21'
+    url: 'https://gforge.inria.fr/frs/download.php/30448/'
+    extracted_dir: 'ecm-6.4.2'
+  gmp-ecm-6.4.3b:
+    date: '2012-06-13'
+    url: 'https://gforge.inria.fr/frs/download.php/30965/'
+    extracted_dir: 'ecm-6.4.3'

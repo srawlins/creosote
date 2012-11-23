@@ -1,4 +1,8 @@
 class Creosote::Package::GMP < Creosote::Package::Base
+  def self.prefix; 'gmp' end
+  def self.headers; ['gmp.h']; end
+  def self.libraries; [['gmp', '__gmpz_init']]; end
+
   def self.data
     @@data
   end

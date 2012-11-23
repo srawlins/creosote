@@ -1,7 +1,7 @@
-class Creosote::Installer::MPFR < Creosote::Installer::Base
+class Creosote::Installer::GMP_ECM < Creosote::Installer::Base
   def initialize(version)
     @version = version
-    @src_download = "#{version}.tar.bz2"
+    @src_download = "#{version}.tar.gz"
     @configure_opts = "--with-gmp=#{Creosote::PackagePath}"
     @dependencies = ['gmp']
   end
@@ -11,7 +11,7 @@ class Creosote::Installer::MPFR < Creosote::Installer::Base
     ensure_sane
     install_dependencies
     cd_src_base
-    download
+    download if not downloaded?
     expand
     cd_src
     if options[:default]

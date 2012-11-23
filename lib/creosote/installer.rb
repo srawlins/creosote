@@ -23,6 +23,7 @@ end
 
 require File.join(File.dirname(__FILE__), 'installer', 'base')
 require File.join(File.dirname(__FILE__), 'installer', 'gmp')
+require File.join(File.dirname(__FILE__), 'installer', 'gmp-ecm')
 require File.join(File.dirname(__FILE__), 'installer', 'mpc')
 require File.join(File.dirname(__FILE__), 'installer', 'mpfr')
 #require File.join(File.dirname(__FILE__), 'package', 'msieve')
