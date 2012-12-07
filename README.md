@@ -24,7 +24,25 @@ My recommendation is this: if you are able, please try to manage your dependenci
 Using creosote's package installer
 ----------------------------------
 
-The gnu_mpc gem provides exposes the GNU MPC `mpc_t` type via a class in Ruby, `MPC`.
+Creosote comes with a single binary program, `creosote`.
+
+### List available packages
+
+```bash
+$ creosote pkg available [package_name]
+```
+
+### Install a package
+
+```bash
+$ creosote pkg install [package_name]
+```
+
+### List installed packages
+
+```bash
+$ creosote pkg installed [package_name]
+```
 
 Compatibility
 -------------
@@ -35,3 +53,5 @@ At this point, creosote has not been tested on a great variety of platforms:
 * Ubuntu 12.04 (with Ubuntu/Linaro's GCC 4.6.3 as the default C compiler)
 
 Creosote has also only been tested with Ruby 1.9.3. It should work fine on all MRI versions 1.9.x, and with MRI 1.8.7, as I have taken care to not use any Ruby 1.9 syntax.
+
+Theoretically, creosote should work with other Ruby VMs, such as JRuby and Rubinius. Problems may arise when building or using C extensions (JRuby, for example, has disabled Cext support in JRuby 1.7.x.). My thoughts on this: for the purposes of scientific computing, I don't think users will immediately need something like JRuby or MacRuby, as opposed to MRI. If a true concurrency threading model is desired, Rubinius should suffice. There are tools that work only in JRuby and tools that only work in MacRuby, and I don't think it is terrible for there to be tools that might only work in MRI.

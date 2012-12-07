@@ -12,6 +12,27 @@ SUB_COMMANDS_PKG = %w(available install)
 #  stop_on SUB_COMMANDS
 #end
 
+banner = <<BANNER
+creosote helps to install package dependencies of various mathematics Rubygem C extensions.
+
+Usage:
+          creosote pkg|package available [options]
+where [options] are:
+
+          creosote pkg|package install [options] [package]
+where [options] are:
+  and [package] is:
+
+          creosote pkg|package installed [options] [package]
+where [options] are:
+  and [package] is:
+BANNER
+
+if ARGV.empty? or ARGV[0].start_with? '--'
+  puts banner
+  exit 1
+end
+
 cmd = ARGV.shift  # get the subcommand
 if cmd == "pkg" || cmd == "package"
   cmd2 = ARGV.shift
@@ -36,6 +57,10 @@ if cmd == "pkg" || cmd == "package"
     package_name = ARGV.shift
     Creosote::Package.installed(package_name)
   else
-    Trollop::die "unknown subcommand #{cmd.inspect}"
+    puts banner
+    exit 1
   end
+else
+  puts banner
+  exit 1
 end
