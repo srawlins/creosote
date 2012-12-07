@@ -17,6 +17,7 @@ class Creosote::Installer::GMP < Creosote::Installer::Base
     else
       versioned_configure
     end
+    make_clean
     make
     make_check
     make_install

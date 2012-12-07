@@ -104,6 +104,11 @@ class Creosote::Installer::Base
     system(command, log_prefix: 'make-check')
   end
 
+  def make_clean
+    command = "make clean"
+    system(command, log_prefix: 'make-clean')
+  end
+
   def make_install
     command = "make install"
     system(command, log_prefix: 'make-install')
