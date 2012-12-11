@@ -114,6 +114,11 @@ class Creosote::Installer::Base
     system(command, log_prefix: 'make-install')
   end
 
+  def make_uninstall
+    command = "make uninstall"
+    system(command, log_prefix: 'make-uninstall')
+  end
+
   def package_src_dir
     File.join(Creosote::PackageSrcPath, @version)
   end

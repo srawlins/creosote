@@ -56,6 +56,14 @@ if cmd == "pkg" || cmd == "package"
     raise Creosote::Package::BadInstallArgs if ARGV.empty?
     package_name = ARGV.shift
     Creosote::Package.installed(package_name)
+  when "uninstall"
+    cmd_opts = Trollop::options do
+      #opt :ver, "package version", :short => '-v', :type => :string
+      opt :default, "uninstall the default version"
+    end
+    raise Creosote::Package::BadInstallArgs if ARGV.empty?
+    package_name = ARGV.shift
+    Creosote::Package.uninstall(package_name, cmd_opts)
   else
     puts banner
     exit 1

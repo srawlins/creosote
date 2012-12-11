@@ -25,6 +25,19 @@ class Creosote::Installer::MPC < Creosote::Installer::Base
     make_install
   end
 
+  def uninstall(package_klass, options={})
+    @package_klass = package_klass
+    ensure_sane
+    # TODO: assuming a lot of things here
+    cd_src_base; cd_src
+    if options[:default]
+      base_configure
+    else
+      versioned_configure
+    end
+    make_uninstall
+  end
+
   def ensure_sane
   end
 end
