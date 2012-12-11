@@ -7,7 +7,7 @@ require 'active_support/inflector'
 module Creosote; end
 
 class Creosote::Package
-  DataDir = File.join(File.dirname(__FILE__), '..', '..', 'data')
+  DataDir = File.join(File.dirname(__FILE__), '..', '..', 'data', 'package')
 
   def self.data_for(package_name)
     YAML.load File.read(
