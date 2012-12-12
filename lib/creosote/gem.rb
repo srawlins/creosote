@@ -3,13 +3,24 @@ require 'gems'
 module Creosote; end
 
 class Creosote::Gem
+  GPDFile = File.join(File.dirname(__FILE__), '..', '..', 'data', 'gem_package_dependencies.yaml')
   @@gems = {}
 
-  def initialize(name, version=nil)
+  attr_reader :name
+
+  def self.gem_package_dependencies
+    @@gem_package_dependencies ||= YAML.load File.read(GPDFile)
+  end
+
+  def self.build(name, version=nil)
     if @@gems.has_key? "#{name}@#{version}"
       return @@gems["#{name}@#{version}"]
     end
 
+    return self.new(name, version)
+  end
+
+  def initialize(name, version=nil)
     @name = name
     @version = version
     @@gems["#{name}@#{version}"] = self
@@ -48,5 +59,17 @@ class Creosote::Gem
       @dependencies = deps.uniq
     end
     return @dependencies
+  end
+
+  def dependencies_with_known_requirements
+    dependencies & Creosote::Gem.gem_package_dependencies.keys
+  end
+
+  def dependency_requirements
+    dependencies_with_known_requirements.map { |gem| Creosote::Gem.gem_package_dependencies[gem] }.flatten.uniq
+  end
+
+  def requirements
+    Creosote::Gem.gem_package_dependencies[@name]
   end
 end

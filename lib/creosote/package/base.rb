@@ -26,11 +26,17 @@ class Creosote::Package::Base
     if (options[:default_only])
       success =            try_headers
       success = success && try_libraries
-      success
+      return success ?
+        Creosote::PackagePath :
+        false
     else
+      configure_args_before = $configure_args.dup
       success =            try_headers   || try_headers_successively_with(paths)
       success = success && try_libraries || try_libraries_successively_with(paths)
-      success
+      #puts ($configure_args.dup.delete_if {|k,v| configure_args_before.keys.include? k}).inspect
+      return success ?
+        true :  # can replace this with some form of $configure_args
+        false
     end
   end
 
@@ -71,6 +77,15 @@ class Creosote::Package::Base
     end
   end
 
+  def self.try_libraries_successively_with(paths)
+    paths.each do |path|
+      arg = "--with-#{prefix}-lib"
+      $configure_args[arg] = File.join(path, 'lib')
+      dir_config(prefix)
+      try_libraries(File.join(path, 'lib'))
+    end
+  end
+
   def self.ok_line(message)
     status = HighLine.color('[OK]', HighLine::BOLD, HighLine::GREEN)
     space = ' ' * (Creosote::Columns - (message.size + status.size))
@@ -81,14 +96,5 @@ class Creosote::Package::Base
     status = HighLine.color('[FAIL]', HighLine::BOLD, HighLine::RED)
     space = ' ' * (Creosote::Columns - (message.size + status.size))
     puts message + space + status
-  end
-
-  def self.try_libraries_successively_with(paths)
-    paths.each do |path|
-      arg = "--with-#{prefix}-lib"
-      $configure_args[arg] = File.join(path, 'lib')
-      dir_config(prefix)
-      try_libraries(File.join(path, 'lib'))
-    end
   end
 end

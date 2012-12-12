@@ -7,11 +7,12 @@ class Creosote::Installer::MPC < Creosote::Installer::Base
   end
 
   def install(package_klass, options={})
+    save_pwd
     @package_klass = package_klass
     ensure_sane
     install_dependencies
     cd_src_base
-    download
+    download if not downloaded?
     expand
     cd_src
     if options[:default]
@@ -23,6 +24,9 @@ class Creosote::Installer::MPC < Creosote::Installer::Base
     make
     make_check
     make_install
+    cd_back
+
+    return @paths_for_extconf
   end
 
   def uninstall(package_klass, options={})

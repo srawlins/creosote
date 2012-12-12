@@ -7,7 +7,7 @@ require 'active_support/inflector'
 module Creosote; end
 
 class Creosote::Package
-  DataDir = File.join(File.dirname(__FILE__), '..', '..', 'data', 'package')
+  DataDir = File.join(File.dirname(__FILE__), '..', '..', 'data', 'packages')
 
   def self.data_for(package_name)
     YAML.load File.read(
@@ -59,9 +59,13 @@ class Creosote::Package
     if package_name.nil?
       # lots of stuff
     else
-    klass = self.package_class(package_name)
-    klass.installed(options)
+      klass = self.package_class(package_name)
+      klass.installed(options)
     end
+  end
+
+  def self.known?(package_name)
+    Creosote::Package.constants.map(&:to_s).map(&:underscore).include? package_name.underscore
   end
 
   def self.print_available(package_name, options={})
@@ -83,14 +87,22 @@ class Creosote::Package
     end
   end
 
-  def self.known?(package_name)
-    Creosote::Package.constants.map(&:to_s).map(&:underscore).include? package_name.underscore
-  end
-
   def self.package_class(package_name)
     name = Creosote::Package.constants.select { |c| c.to_s.underscore == package_name.underscore }.first
     raise NameError.new("Creosote::Package::#{package_name.underscore.camelize}") if name.nil?
     "Creosote::Package::#{name}".constantize
+  end
+
+  def self.uninstall(package_name, options={})
+    #if options[:ver]
+    #  version = options[:ver]
+    #  version = package_class(package_name).recent_packages.select { |e| e =~ /#{version}/ }.first
+    #else
+      version = package_class(package_name).latest_package
+    #end
+    installer_class = Creosote::Installer.installer_class(package_name)
+    installer = installer_class.new(version)
+    installer.uninstall(package_class(package_name), options)
   end
 end
 

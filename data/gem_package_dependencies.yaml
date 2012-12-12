@@ -1,0 +1,9 @@
+---
+gmp:
+- gmp
+gnu_mpc:
+- mpc
+gmp_ecm:
+- gmp-ecm
+msieve:
+- msieve

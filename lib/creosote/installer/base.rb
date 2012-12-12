@@ -9,6 +9,11 @@ class Creosote::Installer::Base
   def base_configure
     command = "./configure --prefix=#{Creosote::PackagePath} #{@configure_opts}"
     system(command, log_prefix: 'base-configure')
+    @paths_for_extconf = Creosote::PackagePath
+  end
+
+  def cd_back
+    Dir.chdir(@pwd)
   end
 
   def cd_src_base
@@ -145,6 +150,10 @@ class Creosote::Installer::Base
     "2> #{prefix}-#{@version}.err > #{prefix}-#{@version}.out"
   end
 
+  def save_pwd
+    @pwd = Dir.pwd
+  end
+
   def system(command, options={})
     options = {log_prefix: 'system'}.merge options
     result = nil
@@ -185,5 +194,6 @@ class Creosote::Installer::Base
   def versioned_configure
     command = "./configure --prefix=#{package_dir} #{@configure_opts}"
     system(command, log_prefix: 'versioned-configure')
+    @paths_for_extconf = package_dir
   end
 end

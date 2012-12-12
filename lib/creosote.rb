@@ -10,6 +10,7 @@ end
 
 
 require File.join(File.dirname(__FILE__), 'creosote', 'gem')
+require File.join(File.dirname(__FILE__), 'creosote', 'gem_installer')
 require File.join(File.dirname(__FILE__), 'creosote', 'package')
 require File.join(File.dirname(__FILE__), 'creosote', 'installer')
 require File.join(File.dirname(__FILE__), 'creosote', 'tee')

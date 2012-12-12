@@ -68,6 +68,14 @@ if cmd == "pkg" || cmd == "package"
     puts banner
     exit 1
   end
+elsif cmd == "gem"
+  cmd2 = ARGV.shift
+  case cmd2
+  when "install"
+    raise Creosote::Package::BadInstallArgs if ARGV.empty?
+    gem_name = ARGV.shift
+    Creosote::GemInstaller.new(gem_name).install
+  end
 else
   puts banner
   exit 1
