@@ -8,6 +8,7 @@ class Creosote::Installer::MPFR < Creosote::Installer::Base
 
   def install(package_klass, options={})
     @package_klass = package_klass
+    save_pwd
     ensure_sane
     install_dependencies
     cd_src_base
@@ -23,8 +24,24 @@ class Creosote::Installer::MPFR < Creosote::Installer::Base
     make
     make_check
     make_install
+    cd_back
   end
 
   def ensure_sane
+  end
+
+  def uninstall(package_klass, options={})
+    @package_klass = package_klass
+    save_pwd
+    ensure_sane
+    # TODO: assuming a lot of things here
+    cd_src_base; cd_src
+    if options[:default]
+      base_configure
+    else
+      versioned_configure
+    end
+    make_uninstall
+    cd_back
   end
 end

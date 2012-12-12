@@ -52,9 +52,11 @@ class Creosote::GemInstaller < Gem::DependencyInstaller
   # TODO: this should be in Creosote::Package or Creosote::Installer
   def check_requirement(requirement)
     if paths_for_extconf = Creosote::Package.installed(requirement, :default_only => true)
+      puts "requirement #{requirement} is already installed at #{paths_for_extconf.inspect}."
       paths_for_extconf = [paths_for_extconf].flatten
       add_extconf_args_for requirement, paths_for_extconf
     else
+      puts "requirement #{requirement} is not yet installed. Installing..."
       paths_for_extconf = Creosote::Package.install(requirement, :default => true)
       paths_for_extconf = [paths_for_extconf].flatten
       add_extconf_args_for requirement, paths_for_extconf

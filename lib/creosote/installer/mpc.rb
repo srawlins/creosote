@@ -31,6 +31,7 @@ class Creosote::Installer::MPC < Creosote::Installer::Base
 
   def uninstall(package_klass, options={})
     @package_klass = package_klass
+    save_pwd
     ensure_sane
     # TODO: assuming a lot of things here
     cd_src_base; cd_src
@@ -40,6 +41,7 @@ class Creosote::Installer::MPC < Creosote::Installer::Base
       versioned_configure
     end
     make_uninstall
+    cd_back
   end
 
   def ensure_sane
