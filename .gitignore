@@ -1,2 +1,4 @@
 Gemfile.lock
 .vagrant
+2012-*.aux
+2012-*.log
